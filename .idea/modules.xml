@@ -3,6 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Java_Blog.iml" filepath="$PROJECT_DIR$/.idea/Java_Blog.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jdxl-seed-course-api/jdxl-seed-course-api.iml" filepath="$PROJECT_DIR$/jdxl-seed-course-api/jdxl-seed-course-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jdxl-seed-course-backend/jdxl-seed-course-backend.iml" filepath="$PROJECT_DIR$/jdxl-seed-course-backend/jdxl-seed-course-backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jdxl-seed-course-bean/jdxl-seed-course-bean.iml" filepath="$PROJECT_DIR$/jdxl-seed-course-bean/jdxl-seed-course-bean.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jdxl-seed-course-core/jdxl-seed-course-core.iml" filepath="$PROJECT_DIR$/jdxl-seed-course-core/jdxl-seed-course-core.iml" />
     </modules>
   </component>
 </project>

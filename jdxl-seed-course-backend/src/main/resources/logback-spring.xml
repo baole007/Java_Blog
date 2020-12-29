@@ -1,0 +1,151 @@
+<!-- Logback configuration. See http://logback.qos.ch/manual/index.html -->
+<configuration scan="true" scanPeriod="10 seconds">
+    <!--<include resource="org/springframework/boot/logging/logback/base.xml" />-->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <contextName>jdxl-seed-course</contextName>
+
+    <!-- 定义日志的根目录 -->
+    <property name="LOG_HOME" value="/data/logs" />
+    <!-- 进程的端口 -->
+    <springProperty scope="context" name="PORT" source="server.port"/>
+    <!-- 定义日志文件名称 -->
+    <!--    <property name="APP_NAME" value="app"/>-->
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name"/>
+    <!-- ch.qos.logback.core.ConsoleAppender 表示控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%tid] [%thread] %-5level %logger{35} - %msg%n</pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <springProfile name="dev">
+        <!--
+        logger主要用于存放日志对象，也可以定义日志类型、级别
+        name：表示匹配的logger类型前缀，也就是包的前半部分
+        level：要记录的日志级别，包括 TRACE < DEBUG < INFO < WARN < ERROR
+        additivity：作用在于children-logger是否使用 rootLogger配置的appender进行输出，false：表示只用当前logger的appender-ref，true：表示当前logger的appender-ref和rootLogger的appender-ref都有效
+        -->
+        <logger name="com.jdxl" level="DEBUG" />
+        <logger name="com.cloud" level="DEBUG" />
+        <!--
+        root与logger是父子关系，没有特别定义则默认为root，任何一个类只会和一个logger对应，
+            要么是定义的logger，要么是root，判断的关键在于找到这个logger，然后判断这个logger的appender和level。
+        -->
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="cvt">
+        <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件 -->
+        <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>ERROR</level>
+            </filter>
+            <File>${LOG_HOME}/${APP_NAME}-${PORT}-error.log</File>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_HOME}/${APP_NAME}-${PORT}-error-%d{yyyyMMdd}.log.%i.gz</fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>500MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+                <maxHistory>1</maxHistory>
+            </rollingPolicy>
+            <!--
+            日志输出格式：%d表示日期时间，%thread表示线程名，%-5level：级别从左显示5个字符宽度
+            %logger{36} 表示logger名字最长36个字符，否则按照句点分割。 %msg：日志消息，%n是换行符
+            -->
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+                    <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
+                        <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%tid] [%thread] %-5level %logger{35} - %msg%n</pattern>
+                    </layout>
+                </encoder>
+            </layout>
+        </appender>
+
+        <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${LOG_HOME}/${APP_NAME}-${PORT}-info.log</File>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_HOME}/${APP_NAME}-${PORT}-info-%d{yyyyMMdd}.log.%i.gz</fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>500MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+                <maxHistory>1</maxHistory>
+            </rollingPolicy>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+                    <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
+                        <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%tid] [%thread] %-5level %logger{35} - %msg%n</pattern>
+                    </layout>
+                </encoder>
+            </layout>
+        </appender>
+
+        <logger name="com.jdxl" level="INFO" />
+        <logger name="com.cloud" level="INFO" />
+        <logger name="com.jdxl.seedcourse.dao" level="DEBUG" />
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="INFO_FILE" />
+            <appender-ref ref="ERROR_FILE" />
+        </root>
+    </springProfile>
+    <springProfile name="prd,prdtask">
+        <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件 -->
+        <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                <level>ERROR</level>
+            </filter>
+            <File>${LOG_HOME}/${APP_NAME}-${PORT}-error.log</File>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_HOME}/${APP_NAME}-${PORT}-error-%d{yyyyMMdd}.log.%i.gz</fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>500MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+                <maxHistory>7</maxHistory>
+            </rollingPolicy>
+            <!--
+            日志输出格式：%d表示日期时间，%thread表示线程名，%-5level：级别从左显示5个字符宽度
+            %logger{36} 表示logger名字最长36个字符，否则按照句点分割。 %msg：日志消息，%n是换行符
+            -->
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+                    <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
+                        <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%tid] [%thread] %-5level %logger{35} - %msg%n</pattern>
+                    </layout>
+                </encoder>
+            </layout>
+        </appender>
+
+        <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <File>${LOG_HOME}/${APP_NAME}-${PORT}-info.log</File>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_HOME}/${APP_NAME}-${PORT}-info-%d{yyyyMMdd}.log.%i.gz</fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>500MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+                <maxHistory>7</maxHistory>
+            </rollingPolicy>
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+                    <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
+                        <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%tid] [%thread] %-5level %logger{35} - %msg%n</pattern>
+                    </layout>
+                </encoder>
+            </layout>
+        </appender>
+
+        <logger name="com.jdxl" level="INFO" />
+        <logger name="com.cloud" level="INFO" />
+        <logger name="com.jdxl.seedcourse.dao" level="DEBUG" />
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+            <appender-ref ref="INFO_FILE" />
+            <appender-ref ref="ERROR_FILE" />
+        </root>
+    </springProfile>
+
+</configuration>

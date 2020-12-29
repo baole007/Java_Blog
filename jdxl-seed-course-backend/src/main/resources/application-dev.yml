@@ -1,0 +1,134 @@
+server:
+  port: 8080
+  tomcat:
+#    accept-count: 100
+    max-threads: 200
+#    min-spare-threads: 100
+#    keepAliveTimeout: 60000   #默认20000
+#    maxKeepAliveRequests: 512 #默认100
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.0.1.2:8848
+        enabled: false
+
+jdxl:
+  redis:
+    nodes: 10.0.1.11:6379 #本机起docker 命令:docker run -d --name redis -p 6379:6379 --privileged=true -v /data/volume/redis:/data  -d redis:4.0.14 redis-server --appendonly yes
+    database: 0
+    defaultTimeToLive: 3600s #Cache的默认过期时间
+    readTimeout: 10s
+    connectTimeout: 10s
+    pool:
+      maxActive: 600
+      maxIdle: 300
+      minIdle: 10
+      maxWait: 5s
+      testOnBorrow: false
+      testOnReturn: false
+      testWhileIdle: true
+#    custom-cache-config:
+#      redisSwitch:
+#        timeToLive: 30d
+#        cacheNullValues: false
+#        useKeyPrefix: false
+#      MchAccountInfos:
+#        timeToLive: 30d
+#        cacheNullValues: false
+#        useKeyPrefix: false
+#      MchPaymentWays:
+#        timeToLive: 30d
+#        cacheNullValues: false
+#        useKeyPrefix: false
+#      findMchInfo:
+#        timeToLive: 30d
+#        cacheNullValues: false
+#        useKeyPrefix: false
+  rabbitmq:
+    addresses: 10.0.3.96
+    port: 5672
+    userName: user
+    password: S8ITuKlxr4
+    publisher-confirms: true
+    virtualHost: jdxl-common
+    consumer:
+      enable: false
+
+#配置分页插件pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql
+  offsetAsPageNum: true
+  rowBoundsWithCount: true
+  countSuffix: _count
+
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+
+feign:
+  httpclient:
+    enabled: true
+    max-connections: 200
+    max-connections-per-route: 50
+    time-to-live: 60
+
+jwt:
+  expire: 1d # 单位-秒
+  refresh_expire: 1y # 1 年
+  header: token
+
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  type-aliases-package: com.jdxl.seedcourse.entity
+
+sharding.jdbc:
+  datasource:
+    names: ds-master,ds-slave
+    ds-master:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://bj-cdb-9i8bkk0w.sql.tencentcdb.com:61859/jdxl_course?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+      username: root
+      password: jiandanxinli1007
+      max-active: 10
+      initial-size: 1
+      min-idle: 1
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      validationQuery: SELECT 'x'
+    ds-slave:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://bj-cdb-9i8bkk0w.sql.tencentcdb.com:61859/jdxl_course?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2B8
+      username: root
+      password: jiandanxinli1007
+      max-active: 10
+      initial-size: 1
+      min-idle: 1
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      max-evictable-idle-time-millis: 3600000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      validationQuery: SELECT 'x'
+  config:
+    masterslave:
+      load-balance-algorithm-type: round_robin
+      name: ds-ms
+      master-data-source-name: ds-master
+      slave-data-source-names: ds-slave
+
+springfox:
+  documentation:
+    enabled: true

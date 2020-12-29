@@ -21,6 +21,7 @@ public class HashMap_Explain {
 
 
     public static void main(String[] args) {
+
         HashMap<Integer,String> hashMap = new HashMap<Integer,String>();
         hashMap.put(1,"one");// put到底是做了什么?数据存储方式是什么 -》按照什么样的数据结构进行存储的
         /**

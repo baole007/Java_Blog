@@ -1,0 +1,15 @@
+server:
+  port: 8080
+  tomcat:
+    accesslog:
+      enabled: false
+      directory: /data/logs
+      prefix: app-tomcat-access-${server.port}
+      request-attributes-enabled: true
+      buffered: false
+      pattern: "%t [%I] %{X-Forwarded-For}i - %a - \"%r\" %s %D"
+spring:
+  profiles:
+    active: dev
+  application:
+    name: jdxl-seed-course-backend

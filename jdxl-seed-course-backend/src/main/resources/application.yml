@@ -1,0 +1,49 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+    lazy-initialization: false
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    fallback-to-system-locale: false
+    use-code-as-default-message: true
+  aop:
+    proxy-target-class: true
+
+management:
+  server:
+    add-application-context-header: false
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: "*"
+    jmx:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+  health:
+    mail:
+      enabled: false
+
+alarm:
+  conf:
+    enable: true
+
+rabbitstarter:
+  confing:
+    exchanges:
+      - name: jdxl.seed.course.topic.exchange.test
+        type: topic
+        queues:
+          - name: jdxl_seed_course_topic_exchange_test_quene
+            routingKey: 'seed.course.topic.exchange.test'

@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        server-addr: 10.0.1.2:8848
+        file-extension: yaml
+conf:
+  group: DEFAULT_GROUP
