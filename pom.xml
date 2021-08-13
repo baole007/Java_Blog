@@ -53,7 +53,7 @@
         <jakarta.validation-api.verson>2.0.1</jakarta.validation-api.verson>
         <feign-httpclient.version>10.4.0</feign-httpclient.version>
         <feign-okhttp.version>10.4.0</feign-okhttp.version>
-        <bcprov.version>1.55</bcprov.version>
+        <bcprov.version>1.67</bcprov.version>
         <dom4j.version>1.6.1</dom4j.version>
         <pagehelper.version>5.1.1</pagehelper.version>
         <pagehelper-spring-boot.version>1.2.3</pagehelper-spring-boot.version>
