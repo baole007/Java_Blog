@@ -33,7 +33,7 @@
         <jdxl-user-api.version>1.1.4</jdxl-user-api.version>
         <jdxl-alarm.version>1.0.1</jdxl-alarm.version>
 
-        <mysql-connector-java.version>8.0.15</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
         <mybatis.spring.boot.version>1.3.5</mybatis.spring.boot.version>
         <sharding-sphere.version>3.0.0</sharding-sphere.version>
         <druid.version>1.1.18</druid.version>
