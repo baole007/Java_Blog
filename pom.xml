@@ -59,7 +59,7 @@
         <pagehelper-spring-boot.version>1.2.3</pagehelper-spring-boot.version>
         <skywalking-logback.version>7.0.0</skywalking-logback.version>
         <swagger.version>3.0.0</swagger.version>
-        <jackson-databind.version>2.9.10</jackson-databind.version>
+        <jackson-databind.version>2.13.4.1</jackson-databind.version>
     </properties>
 
     <parent>
