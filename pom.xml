@@ -42,7 +42,7 @@
         <apache.commons.io.version>2.6</apache.commons.io.version>
         <apache.commons-lang3.version>3.6</apache.commons-lang3.version>
         <apache.httpclient.verson>4.5.3</apache.httpclient.verson>
-        <apache.commons-net.version>3.5</apache.commons-net.version>
+        <apache.commons-net.version>3.9.0</apache.commons-net.version>
         <apache.commons-beanutils.version>1.9.3</apache.commons-beanutils.version>
         <fastjson.version>1.2.62</fastjson.version>
         <guava.version>28.0-jre</guava.version>
